@@ -15,10 +15,17 @@ const validate = values => {
       errors.email = 'Invalid email address'
     }
     if (!values.lastName) {
-        errors.lastName = 'Required'
-      } else if (values.lastName.length < 2) {
-        errors.lastName = 'Minimum be 2 characters or more'
-      }
+      errors.lastName = 'Required'
+    } else if (values.lastName.length < 2) {
+      errors.lastName = 'Minimum be 2 characters or more'
+    }
+    if (!values.address) {
+      errors.address = 'Required'
+    } else if (values.address.length < 10) {
+      errors.address = 'Minimum be 10 characters or more'
+    } else if (values.address.length > 101){
+      errors.address = 'Maximum be 100 characters or minus'
+    }
     return errors
   }
   
@@ -30,6 +37,16 @@ const renderField = ({ input, label, type, meta: { touched, error, warning }}) =
             {touched && ((error && <span className="text-danger">{error}</span>))}
         </div>
     </div>
+)
+
+const renderFieldTextArea = ({ input, label, type, meta: { touched, error, warning }}) => (
+  <div>
+      <label className="control-label">{label}</label>
+      <div>
+          <textarea {...input} placeholder={label} type="TextArea" className="md-textarea form-control"/>
+          {touched && ((error && <span className="text-danger">{error}</span>))}
+      </div>
+  </div>
 )
 
 
@@ -45,6 +62,9 @@ let FormCode = props => {
             </div>
             <div className="form-group">
                 <Field name="email" component={renderField} label="e-mail"/>
+            </div>
+            <div className="form-group">
+                <Field name="address" component={renderFieldTextArea}  label="Address"/>
             </div>
             <div className="form-group">
                 <button type="submit" className="btn btn-primary">Submit></button>
